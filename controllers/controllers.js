@@ -1,5 +1,6 @@
 "use strict";
 
+const { isValidObjectId }   = require("mongoose");
 const { request, response } = require("express");
 
 const Book = require("../models/book");
@@ -8,6 +9,8 @@ const Book = require("../models/book");
 const getBook = async (req = request, res = response) => {
   try {
     const { id } = req.params;
+
+    if (!isValidObjectId(id)) throw "no book exists";
 
     const book = await Book.findById(id);
     
@@ -57,6 +60,7 @@ const postComment = async (req = request, res = response) => {
     const { comment } = req.body;
 
     if (!comment) throw "missing required field comment";
+    if (!isValidObjectId(id)) throw "no book exists";
 
     const book = await Book.findById(id);
 
@@ -79,6 +83,8 @@ const postComment = async (req = request, res = response) => {
 const deleteBook = async (req = request, res = response) => {
   try {
     const { id } = req.params;
+    
+    if (!isValidObjectId(id)) throw "no book exists";
 
     const deletedBook = await Book.findByIdAndDelete(id);
 
