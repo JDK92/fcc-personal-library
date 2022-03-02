@@ -80,12 +80,11 @@ const deleteBook = async (req = request, res = response) => {
   try {
     const { id } = req.params;
 
-    const deletedBook = await Book.findOneAndDelete(id);
+    const deletedBook = await Book.findByIdAndDelete(id);
 
     if (!deletedBook) {
       throw "no book exists";
     } else {
-      console.log(deleteBook);
       return res.json("delete successful");
     }
     
@@ -99,8 +98,6 @@ const deleteBook = async (req = request, res = response) => {
 const deleteBooks = async (req = request, res = response) => {
   try {
     await Book.deleteMany({});
-    console.log("complete delete successful");
-
     return res.json("complete delete successful");
   } catch (error) {
     return res.json(error);
